@@ -43,6 +43,7 @@ function App() {
   const [expenses, setExpenses] = useState([]);
   const [filter, setFilter] = useState('All');
   const [user, setUser] = useState(null);
+  const [advice, setAdvice] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -113,6 +114,16 @@ function App() {
 
   const averageSpending = calculateAverageSpending(filteredExpenses);
 
+  const fetchAdvice = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/api/advice');
+      const data = await response.json();
+      setAdvice(data.advice);
+    } catch (error) {
+      console.error("Error fetching advice:", error);
+    }
+  };
+
   return (
     <div className="w-full min-h-screen bg-gradient-to-br from-white via-blue-50 to-blue-100 p-4">
       <header className="bg-white shadow sticky top-0 z-10 p-4 flex justify-between items-center">
@@ -120,20 +131,35 @@ function App() {
           <h1 className="text-xl font-bold text-indigo-700">💸 Expense Tracker</h1>
           <p className="text-sm text-gray-500">Track your spending smartly</p>
         </div>
-        {user && (
+        <div className="flex space-x-4">
           <button
-            className="text-sm text-red-500 font-semibold hover:underline"
-            onClick={() => {
-              signOut(auth);
-              navigate("/signin");
-            }}
+            className="text-sm text-blue-500 font-semibold hover:underline"
+            onClick={fetchAdvice}
           >
-            Logout
+            💬 Get Advice
           </button>
-        )}
+          {user && (
+            <button
+              className="text-sm text-red-500 font-semibold hover:underline"
+              onClick={() => {
+                signOut(auth);
+                navigate("/signin");
+              }}
+            >
+              Logout
+            </button>
+          )}
+        </div>
       </header>
 
       <main className="max-w-3xl mx-auto p-6">
+        {advice && (
+          <div className="bg-white p-6 rounded-2xl shadow-lg mb-6">
+            <h2 className="text-xl font-semibold text-gray-800 mb-2">AI Advice</h2>
+            <p className="text-gray-700">{advice}</p>
+          </div>
+        )}
+
         <div className="bg-white p-6 rounded-2xl shadow-lg">
           <h2 className="text-xl font-semibold text-gray-800 mb-4 text-center">Add New Expense</h2>
 
