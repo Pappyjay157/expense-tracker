@@ -1,14 +1,15 @@
 # Use official Python image
 FROM python:3.10
 
-# Set working directory
+# Set working directory inside the container
 WORKDIR /app
 
-# Copy required files
-COPY requirements.txt requirements.txt
+# Copy only the necessary files
+COPY ./src/assets/requirements.txt ./requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . .
+# Copy the rest of your source code
+COPY ./src/assets/agent.py ./agent.py
 
 # Expose port
 EXPOSE 10000
