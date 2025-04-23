@@ -1,21 +1,17 @@
-# Use Node.js official image
-FROM node:18-alpine
+# Use official Python image
+FROM python:3.10
 
 # Set working directory
 WORKDIR /app
 
-# Copy package files and install dependencies
-COPY package*.json ./
-RUN npm install
+# Copy required files
+COPY requirements.txt requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the rest of the code
 COPY . .
 
-# Build the app
-RUN npm run build
+# Expose port
+EXPOSE 10000
 
-# Expose the port the app runs on
-EXPOSE 3000
-
-# Start the app
-CMD ["npm", "start"]
+# Run the app
+CMD ["python", "agent.py"]

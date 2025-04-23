@@ -25,4 +25,4 @@ def get_advice():
     return jsonify({"advice": advice})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0', port=10000)
