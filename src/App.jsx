@@ -116,7 +116,7 @@ function App() {
 
   const fetchAdvice = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/advice');
+      const response = await fetch('https://expense-agent.onrender.com/api/advice');
       const data = await response.json();
       setAdvice(data.advice);
     } catch (error) {
