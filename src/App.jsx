@@ -91,7 +91,8 @@ function App() {
       };
 
       try {
-        const docRef = await addDoc(collection(db, "expenses"), newExpense);
+        const userExpensesCollection = collection(db, "expenses", user.uid, "userExpenses");
+        const docRef = await addDoc(userExpensesCollection, newExpense);
         setExpenses(prev => [...prev, { id: docRef.id, ...newExpense }]);
         setFormData({ amount: '', date: '', category: '', description: '' });
       } catch (err) {
